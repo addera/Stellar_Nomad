@@ -1,0 +1,15 @@
+﻿Notes:
+
+todo:
+roaming class in Solder for diffferent types of roaming solders
+use differnet image for running, jumping, standing. investigate current animation. [need animation and images from randy] {use gifs?}
+use external map storage [ask about possable block types]
+background tiles [block size depends on scale, randy]
+wepon firing proper direction [how to display wepons, independent?]
+reworking colision system {help?}
+configuring HUD [randy required]
+coin drops by enemy
+colectable perks, simaler to previus gun pickup
+
+
+enemy types: crawling, flying, walking
