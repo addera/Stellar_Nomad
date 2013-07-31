@@ -31,6 +31,7 @@ namespace sharpshooter
         public int picFrames = 1;
         public int jumpBoost = MainForm.checkConfig("jump boost");
         public int fallSpeed = MainForm.checkConfig("max fall speed");
+        public Point blockLocation;
 
 
         public Soldier(String Image, PointF location)
@@ -81,6 +82,29 @@ namespace sharpshooter
             //velocity.X = (float)Math.Cos(faceingAngle / 180f * Math.PI) * walkDir * moveSpeed;
             //velocity.Y = -(float)Math.Sin(faceingAngle / 180f * Math.PI) * walkDir * moveSpeed;
             
+            if (fireing == true)
+            {
+                currentWepon.fire(this);
+
+                if (!this.currentWepon.isAutoGun || isAutoGunner == true)
+                {
+                    currentWepon.fire(this);
+                }
+            }
+
+            blockLocation.X = (int)location.X / MainForm.blockSize;
+            blockLocation.Y = (int)location.Y / MainForm.blockSize;
+
+            location.X = Math.Max(0, Math.Min((Level.mapBlockWidth - 1) * MainForm.blockSize, location.X));
+            location.Y = Math.Max(0, Math.Min((Level.mapBlockHeight - 1) * MainForm.blockSize, location.Y));
+
+            String blockBeneath = MainForm.levelMap[blockLocation.Y + 1].Substring(blockLocation.X, 1); //checks map aray for a block below soldier
+            if (blockBeneath.Equals("1")
+                && location.Y + (pic.bitmap.Height / 2) >= (blockLocation.Y + 1) * MainForm.blockSize) // compares soldier bottom to block top
+                onPlatform = true;
+            else onPlatform = false;
+
+
             if (onPlatform)
             {
                 velocity.Y = 0;
@@ -94,17 +118,7 @@ namespace sharpshooter
             }
             move();
 
-            if (fireing == true)
-            {
-                currentWepon.fire(this);
-
-                if (!this.currentWepon.isAutoGun || isAutoGunner == true)
-                {
-                    currentWepon.fire(this);
-                }
-            }
-
-            foreach (Wall w in MainForm.wallList)
+            /*foreach (Wall w in MainForm.wallList)
             {
                 PointF touchPoint = new PointF();
                 if (this.isTouchingWall(w, ref touchPoint))
@@ -117,7 +131,7 @@ namespace sharpshooter
                     }
                 }
                 else onPlatform = false;
-            }
+            }*/
             if (velocity.X != 0 && velocity.Y != 0)
             {
                 pic.Update(time);

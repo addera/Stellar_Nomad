@@ -9,7 +9,7 @@ namespace sharpshooter
     public class Player : Soldier
     {
 
-        public Player(PointF location) : base("images/player_image.png", location)
+        public Player(PointF location) : base("images/player_block_image.png", location)
         {
             isNPC = false;
             HP = startHP;

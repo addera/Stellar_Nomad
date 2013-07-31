@@ -40,7 +40,10 @@ namespace sharpshooter
                 invert = false;
             }
             g.Transform = m;
-            g.DrawImage(bitmap, new Rectangle(drawLocation.X, drawLocation.Y, bitmap.Width, bitmap.Height / this.frameCount), new Rectangle(0, bitmap.Height / this.frameCount * this.frame, bitmap.Width, bitmap.Height / this.frameCount), GraphicsUnit.Pixel);
+            g.DrawImage(bitmap, 
+                new Rectangle(drawLocation.X, drawLocation.Y, bitmap.Width, bitmap.Height / this.frameCount), 
+                new Rectangle(0, bitmap.Height / this.frameCount * this.frame, bitmap.Width, bitmap.Height / this.frameCount), 
+                GraphicsUnit.Pixel);
         }
 
         public void Update(int time)

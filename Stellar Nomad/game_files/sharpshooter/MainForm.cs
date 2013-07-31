@@ -27,6 +27,7 @@ namespace sharpshooter
         public static SoundEngin sound;
         public static int levelNum = 1;
         public static String[] levelMap;
+        public static int blockSize = checkConfig("block size");
         
 
         public MainForm()
@@ -81,7 +82,7 @@ namespace sharpshooter
             gameOverScreen = new Picture("Images/GameOver.png", new PointF(this.Width / 2, this.Height / 2), 1, 1);
             victoryScreen = new Picture("Images/Victory.png", new PointF(this.Width / 2, this.Height / 2), 1, 1);
 
-            sound.playBGM("Sounds/ShadowRock.mp3");
+            //sound.playBGM("Sounds/ShadowRock.mp3");
         }
 
         public void DrawGame(Object sender, PaintEventArgs e)
@@ -122,7 +123,7 @@ namespace sharpshooter
             {
                 gameOverScreen.Draw(onScreenGraphics);
             }
-            if (enemyList.Count == 0)
+            if (enemyList.Count == -1) // level will not advance
             {
                 levelNum += 1;
                 LevelNumLabel.Text = levelNum + " ";

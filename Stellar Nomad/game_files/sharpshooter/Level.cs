@@ -8,6 +8,10 @@ namespace sharpshooter
 {
     public class Level
     {
+        public static int mapBlockWidth;
+        public static int mapBlockHeight;
+        public static int mapWidth;
+        public static int mapHeight;
 
         public static void initializeLists()
         {
@@ -27,37 +31,41 @@ namespace sharpshooter
             else
                 mapFile = new System.IO.StreamReader(Directory.GetCurrentDirectory() + "/maps/test_map.txt");
 
-            string inputString = mapFile.ReadLine();
-            int mapX = Convert.ToInt16(inputString);
+            string inputString = mapFile.ReadLine(); //first line of map txt file defines the map width in blocks
+            mapBlockWidth = Convert.ToInt16(inputString); //converting to int
+            mapWidth = mapBlockWidth * MainForm.blockSize; //defining varuable for actual map width
 
             inputString = mapFile.ReadLine();
-            int mapY = Convert.ToInt16(inputString);
+            mapBlockHeight = Convert.ToInt16(inputString);
+            mapHeight = mapBlockHeight * MainForm.blockSize;
 
-            MainForm.levelMap = new String[mapY];
+            MainForm.levelMap = new String[mapBlockHeight];
 
-            for (int i = 0; i < mapY; i++)
+            for (int i = 0; i < mapBlockHeight; i++)
                 MainForm.levelMap[i] = mapFile.ReadLine();
 
             mapFile.Close();
 
             Wall[] walls1 = new Wall[100000];
-            for (int i = 0; i < mapY; i++)
+            for (int i = 0; i < mapBlockHeight; i++)
             {
                 String mapRow = MainForm.levelMap[i];
-                for (int j = 0; j < mapX; j++)
+                for (int j = 0; j < mapBlockWidth; j++)
                 {
                     String mapCell = mapRow.Substring(j, 1);
                     if (mapCell.Equals("1"))
                     {
-                        walls1[(i * 100) + j] = new Wall("Blue1", j * 100, i * 100, 100, 100);
+                        walls1[(i * 100) + j] = new Wall("Blue1", j * MainForm.blockSize, i * MainForm.blockSize, MainForm.blockSize, MainForm.blockSize);
                     }
                 }
             }
 
-            Wall BoarderTop = new Wall("Green", 80, - 80, mapX * 100 + 80, 80);
-            Wall BoarderLeft = new Wall("Green", -80, 0, 80, mapY * 100 + 0);
-            Wall BoarderRight = new Wall("Green", mapX * 100, -80, 80, mapX * 100 + 80);
-            Wall BoarderBottom = new Wall("Green", 0, mapY * 100, mapX * 100 + 80, 80);
+            MainForm.Player1.location = new PointF(80, 80);
+
+            Wall BoarderTop = new Wall("Green", 0, 0, mapBlockWidth * 100 + 80, 80);
+            Wall BoarderLeft = new Wall("Green", -80, 0, 80, mapBlockHeight * 100 + 0);
+            Wall BoarderRight = new Wall("Green", mapBlockWidth * 100, -80, 80, mapBlockWidth * 100 + 80);
+            Wall BoarderBottom = new Wall("Green", 0, mapBlockHeight * 100, mapBlockWidth * 100 + 80, 80);
         }
         
         public static void createEnemys()
@@ -65,7 +73,6 @@ namespace sharpshooter
             //MainForm.Player1 = new Player(new PointF(1000, 1000));
             if (MainForm.levelNum == 1)
             {
-                MainForm.Player1.location = new PointF(80, 80);
                 Enemy e1 = new Enemy(new PointF(2200, 2000)); //room 1
                 Enemy e2 = new Enemy(new PointF(2250, 2300)); //room 1
                 Enemy e3 = new Enemy(new PointF(2095, 2100)); //hallway 1
@@ -102,9 +109,9 @@ namespace sharpshooter
         public static void createLevel()
         {
             initializeLists();
-            createEnemys();
+            //createEnemys();
             createWalls();
-            createWepon();
+            //createWepon();
         }
     }
 }
